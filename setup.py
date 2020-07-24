@@ -1,6 +1,7 @@
 import os.path
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
+import sys
 import warnings
 
 try:
@@ -55,9 +56,12 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 with open(os.path.join(dir_path, 'README.rst')) as f:
     long_description = f.read()
 
+needs_pytest = set(['pytest', 'test', 'ptr']).intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
+
 kwargs = {
     'name': 'fastdtw',
-    'version': '0.3.2',
+    'version': '0.3.4',
     'author': 'Kazuaki Tanida',
     'url': 'https://github.com/slaypni/fastdtw',
     'description': 'Dynamic Time Warping (DTW) algorithm with an O(N) time and memory complexity.',
@@ -68,7 +72,7 @@ kwargs = {
     'packages': find_packages(),
     'ext_modules':  extensions,
     'test_suite': 'tests',
-    'setup_requires': ['pytest-runner'],
+    'setup_requires': pytest_runner,
     'tests_require': ['pytest'],
     'classifiers': classifiers
 }
